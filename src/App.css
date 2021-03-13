@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .App-logo {
@@ -37,6 +39,10 @@
   }
 }
 
-.Todo {
-  width: 50%;
+/* .Todo {
+  width: 90%;
+}*/
+
+.userTable {
+  width: 30%;
 }
