@@ -58,7 +58,7 @@ function App() {
       <div className="container Todo">
         <h1>Roxiler</h1>
         <input
-          type="text"
+          type="search"
           placeholder="Search Here.."
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -94,7 +94,18 @@ function App() {
                   if (search === "") {
                     return item;
                   } else if (
-                    item.title.toLowerCase().includes(search.toLowerCase())
+                    item.title.toLowerCase().includes(search.toLowerCase()) ||
+                    item.id
+                      .toString()
+                      .toLowerCase()
+                      .includes(search.toLowerCase()) ||
+                    (item.completed.toString() === "false"
+                      ? "Incomplete"
+                      : "Completed"
+                    )
+                      .toString()
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
                   ) {
                     return item;
                   }
@@ -111,7 +122,7 @@ function App() {
                       <StyledTableCell align="left">
                         {item.completed.toString() === "false"
                           ? "Incomplete"
-                          : "Complete"}
+                          : "Completed"}
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         <button>View User</button>
