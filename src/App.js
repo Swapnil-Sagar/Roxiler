@@ -76,47 +76,52 @@ function App() {
             </p>
           );
         })} */}
-
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>ToDo ID</StyledTableCell>
-              <StyledTableCell align="left">Title</StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Action</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {task
-              .filter((item) => {
-                if (search == "") {
-                  return item;
-                } else if (
-                  item.title.toLowerCase().includes(search.toLowerCase())
-                ) {
-                  return item;
-                }
-              })
-              .map((item) => {
-                return (
-                  <StyledTableRow key={item.id}>
-                    <StyledTableCell component="th" scope="row">
-                      {item.id}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">{item.title}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.completed}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {item.action}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div className="container Todo">
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ToDo ID</StyledTableCell>
+                <StyledTableCell align="left">Title</StyledTableCell>
+                <StyledTableCell align="right">Status</StyledTableCell>
+                <StyledTableCell align="right">Action</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {task
+                .filter((item) => {
+                  if (search === "") {
+                    return item;
+                  } else if (
+                    item.title.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return item;
+                  }
+                })
+                .map((item) => {
+                  return (
+                    <StyledTableRow key={item.id}>
+                      <StyledTableCell component="th" scope="row">
+                        {item.id}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {item.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {item.completed.toString() === "false"
+                          ? "Incomplete"
+                          : "Complete"}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {item.action}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 }
