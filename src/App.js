@@ -55,13 +55,14 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <h1>Roxiler</h1>
-      <input
-        type="text"
-        placeholder="Search Here.."
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      {/* {task
+      <div className="container Todo">
+        <h1>Roxiler</h1>
+        <input
+          type="text"
+          placeholder="Search Here.."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {/* {task
         .filter((item) => {
           if (search == "") {
             return item;
@@ -76,15 +77,15 @@ function App() {
             </p>
           );
         })} */}
-      <div className="container Todo">
+
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
                 <StyledTableCell>ToDo ID</StyledTableCell>
                 <StyledTableCell align="left">Title</StyledTableCell>
-                <StyledTableCell align="right">Status</StyledTableCell>
-                <StyledTableCell align="right">Action</StyledTableCell>
+                <StyledTableCell align="left">Status</StyledTableCell>
+                <StyledTableCell align="left">Action</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -113,7 +114,7 @@ function App() {
                           : "Complete"}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {item.action}
+                        <button>View User</button>
                       </StyledTableCell>
                     </StyledTableRow>
                   );
