@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Todo() {
+function Todo({ fetchData }) {
   const classes = useStyles();
   const [task, setTask] = useState([]);
   const [search, setSearch] = useState("");
@@ -53,6 +53,8 @@ function Todo() {
     getTodoData();
   }, []);
 
+  console.log(task);
+
   return (
     <div className="App">
       <div className="container Todo">
@@ -62,21 +64,6 @@ function Todo() {
           placeholder="Search Here.."
           onChange={(e) => setSearch(e.target.value)}
         />
-        {/* {task
-        .filter((item) => {
-          if (search == "") {
-            return item;
-          } else if (item.title.toLowerCase().includes(search.toLowerCase())) {
-            return item;
-          }
-        })
-        .map((item) => {
-          return (
-            <p>
-              {item.id} - {item.title} - {item.completed}
-            </p>
-          );
-        })} */}
 
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
@@ -125,7 +112,11 @@ function Todo() {
                           : "Completed"}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        <button className="fetch-button" onClick={this}>
+                        <button
+                          key={item.id}
+                          className="fetch-button"
+                          onClick={fetchData}
+                        >
                           View User
                         </button>
                       </StyledTableCell>
