@@ -17,6 +17,7 @@ function App() {
 
     setUser(data);
   };
+
   var array = user.split(",");
   console.log(user);
   console.log(array);

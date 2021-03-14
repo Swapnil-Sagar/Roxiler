@@ -53,7 +53,7 @@ function Todo({ fetchData }) {
     getTodoData();
   }, []);
 
-  console.log(task);
+  console.log(task.id);
 
   return (
     <div className="App">
