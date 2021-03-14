@@ -77,6 +77,7 @@ function Todo({ fetchData }) {
             </TableHead>
             <TableBody>
               {task
+                // eslint-disable-next-line array-callback-return
                 .filter((item) => {
                   if (search === "") {
                     return item;
