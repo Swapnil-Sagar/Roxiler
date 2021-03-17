@@ -183,11 +183,11 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
                         </StyledTableCell>
                         <StyledTableCell align="left">
                           <button
-                            key={id}
+                            key={item.id}
                             className="fetch-button"
                             //onClick={fetchData}
                             onClick={() => {
-                              getTaskId(item.id);
+                              getTaskId(item.userId);
                               getTaskTitle(item.title);
                               fetchData();
                             }}
