@@ -7,7 +7,7 @@ const axios = require("axios");
 function App() {
   const [user, setUser] = useState("");
   const [taskId, setTaskId] = useState(1);
-  const [taskTitle, setTaskTitle] = useState("NA");
+  const [taskTitle, setTaskTitle] = useState("");
   const URL = `https://jsonplaceholder.typicode.com/users/${taskId}`;
 
   const fetchData = async () => {

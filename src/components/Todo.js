@@ -42,7 +42,7 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
   const [orderDirection, setOrderDirection] = useState("asc");
   const [valueToOrderBy, setValueToOrderBy] = useState("ids");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const getTodoData = async () => {
     try {
@@ -107,20 +107,12 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
     setPage(0);
   };
 
-  // function clickMe(item) {
-  //   console.log(item.id);
-  // }
-
-  // const handler = (id) => (e) => {
-  //   var currentId = id;
-  //   console.log(currentId);
-  // };
-
   return (
     <div className="App">
       <div className="container Todo">
         <h1>Roxiler</h1>
         <input
+          className="SearchBar"
           type="search"
           placeholder="Search Here.."
           onChange={(e) => setSearch(e.target.value)}
@@ -150,7 +142,7 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
               task,
               getComparator(orderDirection, valueToOrderBy)
             ).map((item, index) => (
-              <TableBody>
+              <TableBody key={index}>
                 {task
                   // eslint-disable-next-line array-callback-return
                   .filter((item) => {
@@ -173,6 +165,7 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
                       return item;
                     }
                   })
+
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item, id) => {
                     return (

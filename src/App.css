@@ -47,3 +47,9 @@
   width: 30%;
   margin-top: 20vh;
 }
+
+.SearchBar {
+  margin: 10px;
+  width: 30vh;
+  height: 4vh;
+}
