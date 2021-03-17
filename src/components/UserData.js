@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-function UserData({ array }) {
+function UserData({ array, taskTitle }) {
   const classes = useStyles();
   return (
     <div className="userTable">
@@ -43,7 +43,7 @@ function UserData({ array }) {
               <StyledTableCell variant="head" align="left">
                 ToDo Title
               </StyledTableCell>
-              <StyledTableCell align="left">{array[0]}</StyledTableCell>
+              <StyledTableCell align="left">{taskTitle}</StyledTableCell>
             </TableRow>
             <TableRow>
               <StyledTableCell variant="head" align="left">

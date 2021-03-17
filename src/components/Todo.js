@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Todo({ fetchData, taskId, getTaskId }) {
+function Todo({ fetchData, getTaskId, getTaskTitle }) {
   const classes = useStyles();
   const [task, setTask] = useState([]);
   const [search, setSearch] = useState("");
@@ -111,10 +111,10 @@ function Todo({ fetchData, taskId, getTaskId }) {
   //   console.log(item.id);
   // }
 
-  const handler = (id) => (e) => {
-    var currentId = id;
-    console.log(currentId);
-  };
+  // const handler = (id) => (e) => {
+  //   var currentId = id;
+  //   console.log(currentId);
+  // };
 
   return (
     <div className="App">
@@ -174,7 +174,7 @@ function Todo({ fetchData, taskId, getTaskId }) {
                     }
                   })
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item, index) => {
+                  .map((item, id) => {
                     return (
                       <StyledTableRow key={item.id}>
                         <StyledTableCell component="th" scope="row">
@@ -190,12 +190,13 @@ function Todo({ fetchData, taskId, getTaskId }) {
                         </StyledTableCell>
                         <StyledTableCell align="left">
                           <button
-                            key={index}
+                            key={id}
                             className="fetch-button"
                             //onClick={fetchData}
                             onClick={() => {
                               fetchData();
-                              getTaskId(index);
+                              getTaskId(item.id);
+                              getTaskTitle(item.title);
                             }}
                           >
                             View User
