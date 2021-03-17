@@ -8,10 +8,12 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import TablePagination from "@material-ui/core/TablePagination";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
   body: {
@@ -33,10 +35,15 @@ const useStyles = makeStyles({
   },
 });
 
-function Todo({ fetchData }) {
+function Todo({ fetchData, taskId, getTaskId }) {
   const classes = useStyles();
   const [task, setTask] = useState([]);
   const [search, setSearch] = useState("");
+  const [orderDirection, setOrderDirection] = useState("asc");
+  const [valueToOrderBy, setValueToOrderBy] = useState("ids");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+
   const getTodoData = async () => {
     try {
       const data = await axios.get(
@@ -53,7 +60,61 @@ function Todo({ fetchData }) {
     getTodoData();
   }, []);
 
-  console.log(task.id);
+  //const totalrows = task.length;
+
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  const sortedRowInformation = (rowArray, comparator) => {
+    const stabilizedRowArray = [rowArray].map((el, index) => [el, index]);
+    stabilizedRowArray.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedRowArray.map((el) => el[0]);
+  };
+
+  const handleRequestSort = (event, property) => {
+    const isAscending = valueToOrderBy === property && orderDirection === "asc";
+    setValueToOrderBy(property);
+    setOrderDirection(isAscending ? "desc" : "asc");
+  };
+
+  const createSortHandler = (property) => (event) => {
+    handleRequestSort(event, property);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // function clickMe(item) {
+  //   console.log(item.id);
+  // }
+
+  const handler = (id) => (e) => {
+    var currentId = id;
+    console.log(currentId);
+  };
 
   return (
     <div className="App">
@@ -69,63 +130,92 @@ function Todo({ fetchData }) {
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>ToDo ID</StyledTableCell>
+                <StyledTableCell>
+                  <TableSortLabel
+                    active={valueToOrderBy === "ids"}
+                    direction={
+                      valueToOrderBy === "ids" ? orderDirection : "asc"
+                    }
+                    onClick={createSortHandler("ids")}
+                  >
+                    ToDo ID
+                  </TableSortLabel>
+                </StyledTableCell>
                 <StyledTableCell align="left">Title</StyledTableCell>
                 <StyledTableCell align="left">Status</StyledTableCell>
                 <StyledTableCell align="left">Action</StyledTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {task
-                // eslint-disable-next-line array-callback-return
-                .filter((item) => {
-                  if (search === "") {
-                    return item;
-                  } else if (
-                    item.title.toLowerCase().includes(search.toLowerCase()) ||
-                    item.id
-                      .toString()
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    (item.completed.toString() === "false"
-                      ? "Incomplete"
-                      : "Completed"
-                    )
-                      .toString()
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
-                  ) {
-                    return item;
-                  }
-                })
-                .map((item) => {
-                  return (
-                    <StyledTableRow key={item.id}>
-                      <StyledTableCell component="th" scope="row">
-                        {item.id}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {item.title}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {item.completed.toString() === "false"
-                          ? "Incomplete"
-                          : "Completed"}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <button
-                          key={item.id}
-                          className="fetch-button"
-                          onClick={fetchData}
-                        >
-                          View User
-                        </button>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  );
-                })}
-            </TableBody>
+            {sortedRowInformation(
+              task,
+              getComparator(orderDirection, valueToOrderBy)
+            ).map((item, index) => (
+              <TableBody>
+                {task
+                  // eslint-disable-next-line array-callback-return
+                  .filter((item) => {
+                    if (search === "") {
+                      return item;
+                    } else if (
+                      item.title.toLowerCase().includes(search.toLowerCase()) ||
+                      item.id
+                        .toString()
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      (item.completed.toString() === "false"
+                        ? "Incomplete"
+                        : "Completed"
+                      )
+                        .toString()
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
+                    ) {
+                      return item;
+                    }
+                  })
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item, index) => {
+                    return (
+                      <StyledTableRow key={item.id}>
+                        <StyledTableCell component="th" scope="row">
+                          {item.id}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {item.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {item.completed.toString() === "false"
+                            ? "Incomplete"
+                            : "Completed"}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          <button
+                            key={index}
+                            className="fetch-button"
+                            //onClick={fetchData}
+                            onClick={() => {
+                              fetchData();
+                              getTaskId(index);
+                            }}
+                          >
+                            View User
+                          </button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    );
+                  })}
+              </TableBody>
+            ))}
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={200}
+            page={page}
+            onChangePage={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </div>
     </div>

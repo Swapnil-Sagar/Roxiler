@@ -6,7 +6,8 @@ const axios = require("axios");
 
 function App() {
   const [user, setUser] = useState("");
-  const URL = "https://jsonplaceholder.typicode.com/users/1";
+  const [taskId, setTaskId] = useState(1);
+  const URL = `https://jsonplaceholder.typicode.com/users/${taskId + 1}`;
 
   const fetchData = async () => {
     const response = await axios.get(URL);
@@ -18,12 +19,22 @@ function App() {
     setUser(data);
   };
 
+  function getTaskId(item) {
+    setTaskId(item);
+  }
+
+  console.log("parent mein task id", taskId + 1);
+
   var array = user.split(",");
-  console.log(user);
-  console.log(array);
+  //console.log(user);
+  //console.log(array);
   return (
     <div className="App">
-      <Todo fetchData={fetchData} />
+      <Todo
+        taskId={taskId}
+        getTaskId={getTaskId.bind(this)}
+        fetchData={fetchData}
+      />
       <UserData array={[...array]} fetchData={fetchData} />
     </div>
   );
