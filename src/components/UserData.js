@@ -28,8 +28,6 @@ function UserData({ array, taskTitle }) {
   const classes = useStyles();
   return (
     <div className="userTable">
-      {/* <pre>{user}</pre>
-      <p>{array[1]}</p> */}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableBody>

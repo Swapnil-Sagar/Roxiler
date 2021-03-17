@@ -194,9 +194,9 @@ function Todo({ fetchData, getTaskId, getTaskTitle }) {
                             className="fetch-button"
                             //onClick={fetchData}
                             onClick={() => {
-                              fetchData();
                               getTaskId(item.id);
                               getTaskTitle(item.title);
+                              fetchData();
                             }}
                           >
                             View User
